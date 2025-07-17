@@ -62,56 +62,58 @@ function CourseDetail() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded shadow">
+    <div className="max-w-4xl mx-auto p-8 bg-white rounded-xl shadow-2xl my-10 animate-fade-in-up">
       {/* Header */}
-      <div className="flex flex-col md:flex-row gap-6 mb-6">
+      <div className="flex flex-col md:flex-row gap-8 mb-8 items-center md:items-start">
         <img
           src={course.thumbnail || "https://via.placeholder.com/300x200?text=No+Image"}
           alt={course.title}
-          className="w-full md:w-64 h-40 object-cover rounded"
+          className="w-full md:w-80 h-52 object-cover rounded-lg shadow-lg transform transition-transform duration-500 hover:scale-105"
         />
-        <div className="flex-1">
-          <h1 className="text-2xl font-bold mb-2">{course.title}</h1>
-          <div className="mb-2 text-gray-700" dangerouslySetInnerHTML={{
+        <div className="flex-1 text-center md:text-left">
+          <h1 className="text-4xl font-extrabold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-red-600 animate-bounce-in">
+            {course.title}
+          </h1>
+          <div className="mb-4 text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(course.description)
           }} />
-          <div className="flex gap-2 mb-2">
-            <span className="bg-gray-200 text-xs px-2 py-1 rounded">{course.category}</span>
-            <span className="bg-gray-100 text-xs px-2 py-1 rounded">{course.difficulty}</span>
-            <span className="bg-blue-100 text-xs px-2 py-1 rounded">
+          <div className="flex flex-wrap justify-center md:justify-start gap-3 mb-4">
+            <span className="bg-orange-100 text-orange-800 text-sm font-semibold px-4 py-1 rounded-full shadow-md">{course.category}</span>
+            <span className="bg-blue-100 text-blue-800 text-sm font-semibold px-4 py-1 rounded-full shadow-md">{course.difficulty}</span>
+            <span className="bg-green-100 text-green-800 text-sm font-semibold px-4 py-1 rounded-full shadow-md">
               {course.sections.length} sections
             </span>
           </div>
-          <div className="flex gap-3 mt-2">
+          <div className="flex justify-center md:justify-start gap-4 mt-4">
             <Link
               to={`/edit/${course.id}`}
-              className="text-yellow-600 hover:underline"
+              className="bg-yellow-500 text-white px-6 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out flex items-center"
             >
-              ✏️ Edit
+              <span className="mr-2">✏️</span> Edit Course
             </Link>
             <button
               onClick={handleDelete}
-              className="text-red-600 hover:underline"
+              className="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out flex items-center"
             >
-              🗑 Delete
+              <span className="mr-2">🗑️</span> Delete Course
             </button>
           </div>
         </div>
       </div>
 
       {/* Progress */}
-      <div className="mb-6">
-        <div className="flex items-center gap-2">
-          <span className="font-semibold">Progress:</span>
-          <div className="w-40 h-3 bg-gray-200 rounded">
-            <div
-              className="h-3 bg-blue-500 rounded"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <span className="text-sm">{progress}%</span>
+      <div className="mb-8 p-5 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg shadow-inner animate-fade-in">
+        <div className="flex items-center justify-between mb-2">
+          <span className="font-bold text-lg text-orange-800">Course Progress:</span>
+          <span className="text-xl font-bold text-orange-600">{progress}%</span>
         </div>
-        <div className="text-xs text-gray-500 mt-1">
+        <div className="w-full bg-gray-200 rounded-full h-3">
+          <div
+            className="h-3 bg-gradient-to-r from-orange-400 to-red-500 rounded-full transition-all duration-500 ease-out"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        <div className="text-sm text-gray-600 mt-2 text-right">
           {completedCount} of {totalLessons} lessons completed
         </div>
       </div>
@@ -119,38 +121,41 @@ function CourseDetail() {
       {/* Sections & Lessons */}
       <div>
         {course.sections.map((section, secIdx) => (
-          <div key={secIdx} className="mb-4 border rounded">
+          <div key={secIdx} className="mb-4 border border-orange-200 rounded-lg shadow-md overflow-hidden animate-fade-in-down">
             <button
-              className="w-full text-left px-4 py-2 bg-gray-100 font-semibold flex justify-between items-center"
+              className="w-full text-left px-6 py-4 bg-gradient-to-r from-orange-100 to-red-100 font-bold text-xl text-orange-900 flex justify-between items-center transition-all duration-300 hover:bg-orange-200"
               onClick={() => toggleSection(secIdx)}
             >
               <span>{section.title || `Section ${secIdx + 1}`}</span>
               <span>{openSections.includes(secIdx) ? "▲" : "▼"}</span>
             </button>
             {openSections.includes(secIdx) && (
-              <div className="p-4 bg-gray-50">
-                <div className="mb-2 text-gray-700">{section.description}</div>
-                {section.lessons.map((lesson, lesIdx) => {
-                  const key = `${secIdx}-${lesIdx}`;
-                  return (
-                    <div key={lesIdx} className="mb-4 border-b pb-3">
-                      <div className="flex items-center gap-2 mb-1">
+              <div className="p-6 bg-white border-t border-orange-200">
+                <div className="mb-4 text-gray-700 leading-relaxed">{section.description}</div>
+                <div className="space-y-4">
+                  {section.lessons.map((lesson, lesIdx) => {
+                    const key = `${secIdx}-${lesIdx}`;
+                    return (
+                      <div key={lesIdx} className="p-4 border border-blue-100 rounded-lg bg-blue-50 shadow-sm flex items-start space-x-3 animate-fade-in-right">
                         <input
                           type="checkbox"
                           checked={!!completed[key]}
                           onChange={() => toggleLesson(secIdx, lesIdx)}
+                          className="mt-1 h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                         />
-                        <span className="font-semibold">{lesson.title || `Lesson ${lesIdx + 1}`}</span>
+                        <div>
+                          <span className="font-semibold text-lg text-blue-800">{lesson.title || `Lesson ${lesIdx + 1}`}</span>
+                          <div
+                            className="prose prose-sm max-w-none mt-1 text-gray-700"
+                            dangerouslySetInnerHTML={{
+                              __html: DOMPurify.sanitize(lesson.content || "")
+                            }}
+                          />
+                        </div>
                       </div>
-                      <div
-                        className="prose prose-sm max-w-none"
-                        dangerouslySetInnerHTML={{
-                          __html: DOMPurify.sanitize(lesson.content || "")
-                        }}
-                      />
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>

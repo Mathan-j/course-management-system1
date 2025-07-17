@@ -10,27 +10,27 @@ import ErrorBoundary from "./components/ErrorBoundary";
 function Navbar() {
   const location = useLocation();
   return (
-    <nav className="bg-blue-700 shadow sticky top-0 z-50">
+    <nav className="bg-gradient-to-r from-orange-500 to-red-500 shadow sticky top-0 z-50 transition-all duration-300">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-        <Link to="/" className="text-white text-2xl font-bold tracking-tight">
+        <Link to="/" className="text-white text-2xl font-bold tracking-tight transform hover:scale-105 transition-transform duration-300">
           🎓 CourseManager
         </Link>
         <div className="flex gap-6">
           <Link
             to="/"
-            className={`text-white hover:text-blue-200 transition ${location.pathname === "/" ? "underline" : ""}`}
+            className={`text-white hover:text-orange-200 transition-all duration-300 ${location.pathname === "/" ? "underline" : ""}`}
           >
             Home
           </Link>
           <Link
             to="/dashboard"
-            className={`text-white hover:text-blue-200 transition ${location.pathname === "/dashboard" ? "underline" : ""}`}
+            className={`text-white hover:text-orange-200 transition-all duration-300 ${location.pathname === "/dashboard" ? "underline" : ""}`}
           >
             Dashboard
           </Link>
           <Link
             to="/create"
-            className="bg-white text-blue-700 px-4 py-1 rounded font-semibold shadow hover:bg-blue-100 transition"
+            className="bg-white text-orange-600 px-4 py-1 rounded font-semibold shadow hover:bg-orange-100 transition-all duration-300 transform hover:scale-105"
           >
             + New Course
           </Link>
