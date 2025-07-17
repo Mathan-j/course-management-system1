@@ -1,0 +1,43 @@
+const categories = ['Programming', 'Web Development', 'Data Science', 'Design', 'Business', 'Marketing'];
+const difficulties = ['Beginner', 'Intermediate', 'Advanced'];
+const courseKeywords = ['Introduction', 'Mastering', 'Deep Dive', 'Fundamentals', 'Advanced', 'Practical', 'Complete Guide'];
+const subjectKeywords = ['JavaScript', 'React', 'Node.js', 'Python', 'SQL', 'MongoDB', 'UI/UX', 'Marketing Analytics', 'Project Management', 'Machine Learning'];
+
+const generateRandomLesson = (lessonNum) => ({
+  title: `Lesson ${lessonNum}: ${subjectKeywords[Math.floor(Math.random() * subjectKeywords.length)]} Concept`,
+  description: `This lesson covers a key concept in ${subjectKeywords[Math.floor(Math.random() * subjectKeywords.length)]}.`,
+  content: `Detailed content for Lesson ${lessonNum}. This is a placeholder for a comprehensive explanation.`,
+});
+
+const generateRandomSection = (sectionNum) => ({
+  title: `Section ${sectionNum}: ${courseKeywords[Math.floor(Math.random() * courseKeywords.length)]} Topics`,
+  description: `This section explores various ${courseKeywords[Math.floor(Math.random() * courseKeywords.length)]} aspects.`,
+  lessons: Array.from({ length: Math.floor(Math.random() * 3) + 2 }, (_, i) => generateRandomLesson(i + 1)), // 2-4 lessons
+});
+
+const generateRandomCourse = (index) => {
+  const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+  const randomDifficulty = difficulties[Math.floor(Math.random() * difficulties.length)];
+  const randomCourseKeyword = courseKeywords[Math.floor(Math.random() * courseKeywords.length)];
+  const randomSubjectKeyword = subjectKeywords[Math.floor(Math.random() * subjectKeywords.length)];
+
+  return {
+    id: Date.now() + index,
+    title: `${randomCourseKeyword} ${randomSubjectKeyword} Course ${index + 1}`,
+    description: `A comprehensive course on ${randomSubjectKeyword} focusing on ${randomCourseKeyword.toLowerCase()} concepts.`,
+    thumbnail: `https://picsum.photos/seed/${index}/300/200`,
+    category: randomCategory,
+    difficulty: randomDifficulty,
+    sections: Array.from({ length: Math.floor(Math.random() * 3) + 2 }, (_, i) => generateRandomSection(i + 1)), // 2-4 sections
+  };
+};
+
+// Seed into localStorage
+const seedToLocalStorage = () => {
+  const count = Math.floor(Math.random() * 21) + 20; // 20–40
+  const data = Array.from({ length: count }, (_, i) => generateRandomCourse(i));
+  localStorage.setItem("courses", JSON.stringify(data));
+  console.log(`✅ Seeded ${count} courses to localStorage`);
+};
+
+seedToLocalStorage();
